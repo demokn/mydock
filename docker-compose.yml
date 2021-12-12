@@ -1,0 +1,33 @@
+# https://docs.docker.com/compose/compose-file/
+version: '3.8'
+
+services:
+
+### Mysql ################################################
+  mysql:
+    # https://hub.docker.com/_/mysql
+    build:
+      context: ./mysql
+      args:
+        - MYSQL_VERSION=${MYSQL_VERSION}
+
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - TZ=${MYDOCK_TIMEZONE}
+    volumes:
+        - ${MYDOCK_DATA_PATH}/mysql:/var/lib/mysql
+        - ${MYSQL_ENTRYPOINT_INITDB}:/docker-entrypoint-initdb.d
+    ports:
+      - "${MYSQL_PORT}:3306"
+
+### Redis ################################################
+  redis:
+    build: ./redis
+    volumes:
+      - ${MYDOCK_DATA_PATH}/redis:/data
+    ports:
+        - "${REDIS_PORT}:6379"
+
