@@ -16,18 +16,34 @@ services:
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - TZ=${MYDOCK_TIMEZONE}
+      - TZ=${WORKSPACE_TIMEZONE}
     volumes:
-        - ${MYDOCK_DATA_PATH}/mysql:/var/lib/mysql
+        - ${DATA_PATH_HOST}/mysql:/var/lib/mysql
         - ${MYSQL_ENTRYPOINT_INITDB}:/docker-entrypoint-initdb.d
     ports:
       - "${MYSQL_PORT}:3306"
 
 ### Redis ################################################
   redis:
+    # https://hub.docker.com/_/redis
     build: ./redis
     volumes:
-      - ${MYDOCK_DATA_PATH}/redis:/data
+      - ${DATA_PATH_HOST}/redis:/data
     ports:
         - "${REDIS_PORT}:6379"
 
+### RabbitMQ #############################################
+  rabbitmq:
+    # https://hub.docker.com/_/rabbitmq
+    build: ./rabbitmq
+    ports:
+      - "${RABBITMQ_NODE_HOST_PORT}:5672"
+      - "${RABBITMQ_MANAGEMENT_HTTP_HOST_PORT}:15672"
+      - "${RABBITMQ_MANAGEMENT_HTTPS_HOST_PORT}:15671"
+      - "${RABBITMQ_WEB_STOMP_HOST_PORT}:15674"
+    privileged: true
+    hostname: rabbitmq
+    volumes:
+      - ${DATA_PATH_HOST}/rabbitmq:/var/lib/rabbitmq
+      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+      - ./rabbitmq/management_agent.disable_metrics_collector.conf:/etc/rabbitmq/conf.d/management_agent.disable_metrics_collector.conf
