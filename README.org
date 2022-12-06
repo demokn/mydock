@@ -45,14 +45,18 @@ Got permission denied while trying to connect to the Docker daemon socket at uni
   docker-compose up -d mysql redis
   # 查看所有运行中的容器
   docker ps
+  # 停止指定容器
+  docker stop <Name|ContainerId>
   # 进入指定的容器
-  docker exec -it [Name|ContainerId] /bin/bash
+  docker exec -it <Name|ContainerId> /bin/bash
   # 在指定的容器执行命令
-  docker exec [Name|ContainerId] which bash
+  docker exec <Name|ContainerId> which bash
   # 列出容器的端口映射
-  docker port [Name|ContainerId]
+  docker port <Name|ContainerId>
   # 从镜像仓库中拉取或更新指定镜像
   docker pull [OPTIONS] Name[:TAG|@DIGEST]
   # 创建一个新的容器并运行一个命令
-  docker run [OPTIONS] [Name|ContainerId] [COMAND] [ARG...]
+  docker run [OPTIONS] <Name|ContainerId> [COMAND] [ARG...]
+  # 查看容器运行时的终端日志输出
+  docker logs -f <Name|ContainerId>
 #+end_src
