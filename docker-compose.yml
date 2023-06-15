@@ -47,3 +47,11 @@ services:
       - ${DATA_PATH_HOST}/rabbitmq:/var/lib/rabbitmq
       - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
       - ./rabbitmq/management_agent.disable_metrics_collector.conf:/etc/rabbitmq/conf.d/management_agent.disable_metrics_collector.conf
+
+### Grafana #############################################
+  grafana:
+    build: ./grafana
+    volumes:
+      - ${DATA_PATH_HOST}/grafana:/var/lib/grafana
+    ports:
+      - "${GRAFANA_PORT}:3000"
